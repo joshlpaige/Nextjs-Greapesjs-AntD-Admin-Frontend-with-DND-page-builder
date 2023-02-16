@@ -50,11 +50,17 @@ export const getServerSideProps = async (ctx: any) => {
             },
         };
     }
-
     return {
-        props: {
-            session,
+        props: { session },
+        redirect: {
+            destination: '/admin/lines',
+            permanent: false,
         },
     };
+    // return {
+    //     props: {
+    //         session,
+    //     },
+    // };
 };
 

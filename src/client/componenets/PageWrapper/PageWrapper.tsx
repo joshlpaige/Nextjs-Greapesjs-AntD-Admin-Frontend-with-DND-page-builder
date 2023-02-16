@@ -37,7 +37,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageWrappe
     return (
         <Layout hasSider style={{ minHeight: '100vh' }}>
             <Sider breakpoint="lg" collapsible>
-                <Link href="/">
+                <Link href="/admin/lines">
                     <FlexContainer align="center" justify="center" style={{ height: '100px' }}>
                         <h1 style={{ color: '#fff' }}> {isMobile ? 'Admin' : 'Admin Dashboard'}</h1>
                     </FlexContainer>
