@@ -32,6 +32,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageWrappe
         const url = Router.asPath;
         if (url === '/admin/lines') setSelectedKeys(['lines']);
         else if (url === '/admin/teams') setSelectedKeys(['teams']);
+        else if (url === '/admin/bulk') setSelectedKeys(['bulk']);
     }, []);
 
     return (
