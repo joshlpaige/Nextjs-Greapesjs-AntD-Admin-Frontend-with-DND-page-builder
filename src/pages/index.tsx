@@ -11,6 +11,8 @@ interface Props {
 import dayjs from 'dayjs';
 
 import { getSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
+import { FlexContainer } from '@client/componenets/Layout';
 
 export default function Home({ session }: Props) {
     const [data, setData] = useState<Team[]>([]);
@@ -26,7 +28,11 @@ export default function Home({ session }: Props) {
         load();
     }, []);
 
-    return <>Home</>;
+    return (
+        <FlexContainer style={{ minHeight: '500px' }} justify="center" align="center">
+            <Button onClick={() => signOut()}>Log out</Button>
+        </FlexContainer>
+    );
 }
 
 export const getServerSideProps = async (ctx: any) => {
