@@ -50,9 +50,9 @@ export const deleteTeams = async (keys: string[]) => {
         .catch((err) => err.response.data);
 };
 
-export const deleteTeam = async (key: string) => {
+export const deleteTeam = async (uid: string) => {
     return axios
-        .delete<Team>(`/api/teams/${key}`)
+        .delete<Team>(`/api/teams/${uid}`)
         .then((res) => res.data)
         .catch((err) => err.response.data);
 };

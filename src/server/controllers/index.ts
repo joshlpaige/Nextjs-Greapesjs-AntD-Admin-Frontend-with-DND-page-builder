@@ -1,4 +1,6 @@
 import * as teamController from './team';
 import * as accountController from './account';
+import * as lineController from './line';
 
-export { accountController, teamController };
+export { accountController, teamController, lineController };
+

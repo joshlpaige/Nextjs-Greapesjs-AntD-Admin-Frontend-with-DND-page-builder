@@ -2,7 +2,8 @@ import React from 'react';
 import { Button, Checkbox, Form, Input, Space, message } from 'antd';
 import { signIn, getSession } from 'next-auth/react';
 import Router from 'next/router';
-
+import { Layout } from 'antd';
+const { Header, Footer, Sider, Content } = Layout;
 const onFinish = async (values: any) => {
     const res: any = await signIn('credentials', { username: values.email, password: values.password, redirect: false });
     if (res?.error) {
@@ -17,34 +18,48 @@ const onFinishFailed = (errorInfo: any) => {
 };
 
 const App: React.FC = () => (
-    <div style={{ width: '100%', minHeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-        >
-            <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
-                <Input />
-            </Form.Item>
+    <Layout style={{ minHeight: '100vh' }}>
+        <Header style={{ background: 'transparent', textAlign: 'center' }}>
+            <img src={'/logo-trans.gif'} alt="Linesandtimes" />
+        </Header>
 
-            <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
-                <Input.Password />
-            </Form.Item>
+        <Content>
+            <div style={{ width: '100%', minHeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Form
+                    name="basic"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                    initialValues={{ remember: true }}
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
+                    autoComplete="off"
+                >
+                    <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Please input your email!' }]}>
+                        <Input />
+                    </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Space>
-                    <Button href="/auth/signup">Register</Button>
-                    <Button type="primary" htmlType="submit">
-                        Login
-                    </Button>
-                </Space>
-            </Form.Item>
-        </Form>
-    </div>
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[{ required: true, message: 'Please input your password!' }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+
+                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                        <Space>
+                            <Button href="/auth/signup">Register</Button>
+                            <Button type="primary" htmlType="submit">
+                                Login
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                </Form>
+            </div>
+        </Content>
+
+        <Footer style={{ textAlign: 'center' }}>@2023 Linesandtimes.com All Rights Reserved.</Footer>
+    </Layout>
 );
 
 export default App;
@@ -68,3 +83,4 @@ export const getServerSideProps = async (ctx: any) => {
         },
     };
 };
+

@@ -7,7 +7,11 @@ import dayjs from 'dayjs';
 export const getTeams = async (req: NextApiRequest, res: NextApiResponse) => {
     // const { key } = req.query;
 
-    const teams = await TeamModel.find({}, '-_id').lean();
+    const teams = await TeamModel.find({}, '-_id', {
+        sort: {
+            createdAt: -1,
+        },
+    }).lean();
 
     return new http.SuccessResponse(teams).send(res);
 };
@@ -53,10 +57,11 @@ export const createTeam = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const updateTeam = async (req: NextApiRequest, res: NextApiResponse) => {
-    const e = req.body;
+    const { uid } = req.query;
+    console.log(uid, req.body);
     try {
         const team =
-            (await TeamModel.findOneAndUpdate({ key: e.key } as any, req.body, {
+            (await TeamModel.findOneAndUpdate({ uid: uid } as any, req.body, {
                 new: true,
             })) || undefined;
 
@@ -67,9 +72,9 @@ export const updateTeam = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const deleteTeam = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { key } = req.query;
+    const { uid } = req.query;
     try {
-        await TeamModel.deleteOne({ key: key });
+        await TeamModel.deleteOne({ uid: uid });
 
         return new http.SuccessResponse({ success: true }).send(res);
     } catch (error) {
@@ -80,7 +85,7 @@ export const deleteTeam = async (req: NextApiRequest, res: NextApiResponse) => {
 export const deleteTeams = async (req: NextApiRequest, res: NextApiResponse) => {
     const { keys } = req.query;
     try {
-        await TeamModel.deleteMany({ key: keys });
+        await TeamModel.deleteMany({ uid: keys });
 
         return new http.SuccessResponse({ success: true }).send(res);
     } catch (error) {
@@ -89,15 +94,22 @@ export const deleteTeams = async (req: NextApiRequest, res: NextApiResponse) => 
 };
 
 export const updateTeams = async (req: NextApiRequest, res: NextApiResponse) => {
-    const e = req.body;
+    const { teams } = req.body;
     try {
-        const team =
-            (await TeamModel.findOneAndUpdate({ key: e.key } as any, req.body, {
-                new: true,
-            })) || undefined;
+        await TeamModel.bulkWrite(
+            // @ts-ignore:next-line
+            teams.map((team: Team) => ({
+                updateOne: {
+                    filter: { uid: team.uid },
+                    update: { $set: team },
+                    upsert: true,
+                },
+            })),
+        );
 
-        return new http.SuccessResponse(team).send(res);
+        return new http.SuccessResponse({ success: true }).send(res);
     } catch (error) {
         return new http.ErrorResponse(500, error as string).send(res);
     }
 };
+

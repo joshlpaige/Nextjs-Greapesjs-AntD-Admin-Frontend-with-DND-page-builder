@@ -1,5 +1,4 @@
 export enum AccountType {
-    SuperAdmin = 'super-admin',
     Admin = 'admin',
     user = 'user',
 }
@@ -11,3 +10,4 @@ export interface User {
     password: string;
     accountType: AccountType;
 }
+

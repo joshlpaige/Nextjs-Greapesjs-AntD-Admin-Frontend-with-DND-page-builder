@@ -26,7 +26,7 @@ export default function Home({ session }: Props) {
         load();
     }, []);
 
-    return <>Home</>;
+    return <PageWrapper>Home</PageWrapper>;
 }
 
 export const getServerSideProps = async (ctx: any) => {
@@ -37,6 +37,15 @@ export const getServerSideProps = async (ctx: any) => {
             props: { session },
             redirect: {
                 destination: '/auth/login',
+                permanent: false,
+            },
+        };
+    }
+    if (session.user.accountType !== AccountType.Admin) {
+        return {
+            props: { session },
+            redirect: {
+                destination: '/',
                 permanent: false,
             },
         };
