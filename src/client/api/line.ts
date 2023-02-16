@@ -1,9 +1,9 @@
 import { Line } from '@shared/types';
 import axios from 'axios';
 
-export const getLines = async () => {
+export const getLines = async (sport?: string) => {
     return axios
-        .get<Line[]>('/api/lines')
+        .get<Line[]>(`/api/lines${sport ? `?sport=${sport}` : ''}`)
         .then((res) => res.data)
         .catch((err) => err.response.data);
 };
@@ -29,9 +29,9 @@ export const createLine = async (team: Line) => {
         .catch((err) => err.response.data);
 };
 
-export const updateLines = async (teams: Line[]) => {
+export const updateLines = async (lines: Partial<Line>[]) => {
     return axios
-        .patch<Line>(`/api/lines`, teams)
+        .patch<Line>(`/api/lines`, lines)
         .then((res) => res.data)
         .catch((err) => err.response.data);
 };

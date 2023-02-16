@@ -5,7 +5,10 @@ import { http } from '@server/services';
 import dayjs from 'dayjs';
 
 export const getLines = async (req: NextApiRequest, res: NextApiResponse) => {
-    const lines = await LineModel.find({}, '-_id', {
+    const { sport } = req.query;
+    const option: Partial<Line> = {};
+    if (sport) option.sport = sport as string;
+    const lines = await LineModel.find(option, '-_id', {
         sort: {
             createdAt: -1,
         },
@@ -91,14 +94,20 @@ export const deleteLines = async (req: NextApiRequest, res: NextApiResponse) => 
 };
 
 export const updateLines = async (req: NextApiRequest, res: NextApiResponse) => {
-    const e = req.body;
+    const lines = req.body;
     try {
-        const line =
-            (await LineModel.findOneAndUpdate({ uid: e.uid } as any, req.body, {
-                new: true,
-            })) || undefined;
+        await LineModel.bulkWrite(
+            // @ts-ignore:next-line
+            lines.map((Line: Line) => ({
+                updateOne: {
+                    filter: { uid: Line.uid },
+                    update: { $set: Line },
+                    upsert: true,
+                },
+            })),
+        );
 
-        return new http.SuccessResponse(line).send(res);
+        return new http.SuccessResponse({ success: true }).send(res);
     } catch (error) {
         return new http.ErrorResponse(500, error as string).send(res);
     }

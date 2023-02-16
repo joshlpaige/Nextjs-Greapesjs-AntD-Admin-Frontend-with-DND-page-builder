@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScanOutlined, MenuUnfoldOutlined, LogoutOutlined, TeamOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { ScanOutlined, LogoutOutlined, TeamOutlined, EditOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import { signOut } from 'next-auth/react';
 import Router from 'next/router';
@@ -58,6 +58,11 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageWrappe
                             key: 'teams',
                             icon: <TeamOutlined />,
                             label: 'Teams',
+                        },
+                        {
+                            key: 'bulk',
+                            icon: <EditOutlined />,
+                            label: 'Edit Lines by Sport',
                         },
                         {
                             key: 'logout',
