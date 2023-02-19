@@ -1,7 +1,7 @@
 import { Line } from '@shared/types';
 import axios from 'axios';
 
-export const getLines = async (sport?: string) => {
+export const getLines = async (sport?: string): Promise<Line[]> => {
     return axios
         .get<Line[]>(`/api/lines${sport ? `?sport=${sport}` : ''}`)
         .then((res) => res.data)

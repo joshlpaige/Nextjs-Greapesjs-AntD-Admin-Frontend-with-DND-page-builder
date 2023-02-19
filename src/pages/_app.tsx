@@ -13,6 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     theme={{
                         token: {
                             colorPrimary: '#00b96b',
+                            colorLinkActive: '#56BFF8',
                         },
                     }}
                 >
