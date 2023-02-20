@@ -106,7 +106,7 @@ export default function Home({ session }: Props) {
             </div>
             <Divider />
             <Row gutter={[10, 10]}>
-                <Col span={18}>
+                <Col xs={24} xl={18}>
                     <Collapse defaultActiveKey={['0', '1', '2', '3', '4']} ghost>
                         {contents.map((c, i) => (
                             <Panel
@@ -122,7 +122,7 @@ export default function Home({ session }: Props) {
                         ))}
                     </Collapse>
                 </Col>
-                <Col span={6}>
+                <Col xs={24} xl={6}>
                     <Rules.Sidebar rule="Basketball" url="/pdf_rules/Basketball_Rules_Linesandtimes_com.pdf" />
                 </Col>
             </Row>

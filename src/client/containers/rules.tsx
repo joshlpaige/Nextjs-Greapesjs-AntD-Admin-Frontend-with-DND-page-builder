@@ -1,4 +1,5 @@
 import { Card, Divider, Space, Typography } from 'antd';
+import Link from 'next/link';
 
 interface Props {
     rule?: 'Baseball' | 'Basketball' | 'Football';
@@ -11,21 +12,21 @@ const Sidebar = ({ rule, url }: Props) => {
             <Card title="Rules">
                 <Space direction="vertical">
                     <Typography.Title level={5}>
-                        <a href="/rules/baseball">Baseball Rules</a>
+                        <Link href="/rules/baseball">Baseball Rules</Link>
                     </Typography.Title>
                     <div>Purpose for money line wagering and run line wagering.</div>
                 </Space>
                 <Divider />
                 <Space direction="vertical">
                     <Typography.Title level={5}>
-                        <a href="/rules/baseball">Basketball Rules</a>
+                        <Link href="/rules/baseball">Basketball Rules</Link>
                     </Typography.Title>
                     <div>Basketball parleys and basketball doyles.</div>
                 </Space>
                 <Divider />
                 <Space direction="vertical">
                     <Typography.Title level={5}>
-                        <a href="/rules/baseball">Football Rules</a>
+                        <Link href="/rules/baseball">Football Rules</Link>
                     </Typography.Title>
                     <div>Football parleys and football doyles.</div>
                 </Space>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Card, Space, Breadcrumb } from 'antd';
 import Router from 'next/router';
 import { Display } from '@shared/utils';
+import Link from 'next/link';
 
 const BreadcrumbComp = () => {
     const [url, setCurrentUrl] = React.useState<string>('/rules');
@@ -38,9 +39,9 @@ const BreadcrumbComp = () => {
                         url === icon.url ? (
                             <span>{icon.title}</span>
                         ) : (
-                            <Button key={icon.title} type="link" href={icon.url}>
+                            <Link key={icon.title} type="link" href={icon.url}>
                                 {icon.title}
-                            </Button>
+                            </Link>
                         ),
                     )}
                 </Space>
