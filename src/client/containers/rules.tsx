@@ -34,7 +34,7 @@ const Sidebar = ({ rule, url }: Props) => {
             {rule && (
                 <Card>
                     <Typography.Title level={2}>PDF Available</Typography.Title>
-                    <a href={url} target="_blank" download>
+                    <a href={url} target="_blank" rel="noreferrer" download>
                         <span>Click here to download a .PDF of the {rule} Rules.</span>
                     </a>
                 </Card>

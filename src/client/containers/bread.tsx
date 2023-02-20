@@ -37,7 +37,7 @@ const BreadcrumbComp = () => {
                 <Space split="/" size={'small'}>
                     {urls.map((icon) =>
                         url === icon.url ? (
-                            <span>{icon.title}</span>
+                            <span key={icon.title}>{icon.title}</span>
                         ) : (
                             <Link key={icon.title} type="link" href={icon.url}>
                                 {icon.title}
@@ -49,7 +49,7 @@ const BreadcrumbComp = () => {
             <Breadcrumb style={{ display: isMobile ? 'inherit' : 'none' }}>
                 {urls.map((icon) => (
                     <Breadcrumb.Item key={icon.title}>
-                        {url === icon.url ? icon.title : <a href={icon.url}>{icon.title}</a>}
+                        {url === icon.url ? icon.title : <Link href={icon.url}>{icon.title}</Link>}
                     </Breadcrumb.Item>
                 ))}
             </Breadcrumb>

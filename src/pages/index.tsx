@@ -79,7 +79,7 @@ export default function Home({ session }: Props) {
                 split
                 dataSource={icons}
                 renderItem={(item) => (
-                    <List.Item>
+                    <List.Item key={item.title}>
                         <Space>
                             <img src={item.url} alt={item.title} />
                             <Typography.Title level={isMobile ? 5 : 3}>{item.title}</Typography.Title>

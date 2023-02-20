@@ -43,6 +43,26 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
         alignItems: 'center',
         justifyContent: 'center',
     };
+    const items = [
+        {
+            key: 'home',
+            label: 'Home',
+        },
+        {
+            key: 'lines',
+            label: 'Lines',
+        },
+
+        {
+            key: 'rules',
+            label: 'Rules',
+        },
+        {
+            key: 'special',
+            label: 'Special Events',
+        },
+    ];
+
     return (
         <Layout className="layout" style={{ minHeight: '100vh', maxWidth: '85%', margin: '0 auto' }}>
             <Header
@@ -59,25 +79,7 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
                         mode="horizontal"
                         style={MenuCSS}
                         defaultSelectedKeys={selectedKeys}
-                        items={[
-                            {
-                                key: 'home',
-                                label: 'Home',
-                            },
-                            {
-                                key: 'lines',
-                                label: 'Lines',
-                            },
-
-                            {
-                                key: 'rules',
-                                label: 'Rules',
-                            },
-                            {
-                                key: 'spcial',
-                                label: 'Special Events',
-                            },
-                        ]}
+                        items={items}
                     />
                     <div>
                         <Button icon={<LogoutOutlined />} type="link" onClick={() => signOut()}>
@@ -98,9 +100,11 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
                 <FlexContainer justify="space-between">
                     <span>©{new Date().getFullYear()} Linesandtimes.com All Rights Reserved. </span>
                     <Breadcrumb separator="|">
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
+                        {items.map((u) => (
+                            <Breadcrumb.Item key={u.key}>
+                                <Link href={`/${u.key === 'home' ? '' : u.key}`}>{u.label}</Link>
+                            </Breadcrumb.Item>
+                        ))}
                     </Breadcrumb>
                 </FlexContainer>
             </Footer>

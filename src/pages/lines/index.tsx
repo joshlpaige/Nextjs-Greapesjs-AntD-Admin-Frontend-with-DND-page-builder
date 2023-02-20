@@ -1,41 +1,22 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 import { AccountType, Line, Team } from '@shared/types';
-import {
-    Button,
-    Checkbox,
-    DatePicker,
-    Divider,
-    Input,
-    InputNumber,
-    InputRef,
-    Modal,
-    Select,
-    Space,
-    Table,
-    TimePicker,
-    Typography,
-    message,
-    notification,
-} from 'antd';
+import { Button, DatePicker, Modal, Select, Space, Table } from 'antd';
+import { FilePdfOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker;
 import type { Dayjs } from 'dayjs';
 import { FrontPageWrapper } from '@client/componenets/PageWrapper';
 import { Session } from 'next-auth';
-import { SearchOutlined, FileAddOutlined } from '@ant-design/icons';
 
 import { getSession } from 'next-auth/react';
 
-import { lineApi, teamApi } from '@client/api';
-import { Popconfirm } from 'antd';
+import { lineApi } from '@client/api';
 
-import { Form } from 'antd';
-import { Sports, Broadcast, Sport } from '@shared/types/sport';
-import { ColumnType } from 'antd/es/table';
-import { FilterDropdownProps } from 'antd/es/table/interface';
+import { Sports } from '@shared/types/sport';
 import dayjs from 'dayjs';
 import { FlexContainer } from '@client/componenets/Layout';
-import { Display, uniqueId } from '@shared/utils';
+import { Display } from '@shared/utils';
+import { useReactToPrint } from 'react-to-print';
 
 interface Props {
     session: Session;
@@ -46,9 +27,14 @@ export default function Home({ session }: Props) {
     const isMobile = Display.IsMobile();
     const [data, setData] = useState<Line[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [printing, setIsprinting] = useState<boolean>(false);
     const [dates, setDates] = useState<RangeValue>(null);
     const [value, setValue] = useState<RangeValue>(null);
     const [selectedSport, setSelectedSport] = useState<string>('nba');
+    const componentRef = React.useRef(null);
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
 
     const load = async () => {
         setIsLoading(true);
@@ -115,14 +101,33 @@ export default function Home({ session }: Props) {
     return (
         <FrontPageWrapper>
             <FlexContainer fullwidth justify="space-between" style={{ marginBottom: '25px' }}>
-                <Select style={{ width: '120px' }} options={Sports} value={selectedSport} onChange={setSelectedSport} />
-                <RangePicker
-                    value={dates || value}
-                    onCalendarChange={(val) => setDates(val)}
-                    onChange={(val) => setValue(val)}
-                />
+                <Space direction={isMobile ? 'vertical' : 'horizontal'}>
+                    <Select style={{ width: '120px' }} options={Sports} value={selectedSport} onChange={setSelectedSport} />
+                    <RangePicker
+                        value={dates || value}
+                        onCalendarChange={(val) => setDates(val)}
+                        onChange={(val) => setValue(val)}
+                    />
+                </Space>
+                <Button
+                    onClick={() => {
+                        setIsprinting(true);
+                        setTimeout(() => {
+                            handlePrint();
+                            setIsprinting(false);
+                        }, 1000);
+                    }}
+                    icon={<FilePdfOutlined />}
+                    loading={printing}
+                    type="primary"
+                    shape={'round'}
+                >
+                    Print
+                </Button>
             </FlexContainer>
+
             <Table
+                id="lines-table"
                 showHeader={false}
                 bordered
                 rowClassName={() => 'editable-row'}
@@ -135,6 +140,30 @@ export default function Home({ session }: Props) {
                     simple: isMobile,
                 }}
             />
+            <div ref={componentRef} className="print-div" style={{ display: printing ? 'block' : 'none' }}>
+                <div style={{ textAlign: 'center', margin: '25px 0' }}>
+                    <img src="/logo-trans.gif" />
+                </div>
+                <Space style={{ fontSize: '20px', marginBottom: '10px' }}>
+                    <span>{Sports.find((s) => s.value == selectedSport)?.label || ''} Lines</span>
+                    {dates && (
+                        <span>
+                            {dayjs(dates ? dates[0] : '').format('YYYY-MM-DD')} -{' '}
+                            {dayjs(dates ? dates[1] : '').format('YYYY-MM-DD')}
+                        </span>
+                    )}
+                </Space>
+                <Table
+                    showHeader={false}
+                    bordered
+                    rowClassName={() => 'editable-row'}
+                    rowKey={'uid'}
+                    columns={defaultColumns}
+                    dataSource={data || []}
+                    loading={isLoading}
+                    pagination={false}
+                />
+            </div>
         </FrontPageWrapper>
     );
 }
