@@ -148,8 +148,8 @@ export default function Home({ session }: Props) {
                     <span>{Sports.find((s) => s.value == selectedSport)?.label || ''} Lines</span>
                     {dates && (
                         <span>
-                            {dayjs(dates ? dates[0] : '').format('YYYY-MM-DD')} -{' '}
-                            {dayjs(dates ? dates[1] : '').format('YYYY-MM-DD')}
+                            {dayjs(dates ? dates[0] : '').format('YYYY/MM/DD')} ~
+                            {dayjs(dates ? dates[1] : '').format('YYYY/MM/DD')}
                         </span>
                     )}
                 </Space>

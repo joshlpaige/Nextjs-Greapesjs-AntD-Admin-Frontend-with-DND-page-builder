@@ -75,7 +75,9 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageWrappe
             </Sider>
             <Layout className="site-layout">
                 <Header style={{ padding: 20, height: 100, background: colorBgContainer }}>
-                    <img src="/logo-trans.gif" />
+                    <Link href="/" style={{ height: 0 }}>
+                        <img src="/logo-trans.gif" />
+                    </Link>
                 </Header>
                 <Content
                     style={{

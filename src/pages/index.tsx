@@ -1,7 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
 import { AccountType, Team } from '@shared/types';
-import { Button, Input, Modal, Space, Table, message, notification, Avatar, Divider, List, Typography } from 'antd';
+import {
+    Button,
+    Input,
+    Modal,
+    Space,
+    Table,
+    message,
+    notification,
+    Avatar,
+    Divider,
+    List,
+    Typography,
+    Row,
+    Col,
+} from 'antd';
 import PageWrapper, { FrontPageWrapper } from '@client/componenets/PageWrapper';
 import { Session } from 'next-auth';
 interface Props {
@@ -66,10 +80,24 @@ export default function Home({ session }: Props) {
 
     return (
         <FrontPageWrapper>
-            <div style={{ margin: '20px 0' }}>
-                <img src="/intro.gif" alt="" style={{ width: '100%' }} />
-            </div>
-            <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+            <Row gutter={[20, 10]}>
+                <Col xs={24} xl={18}>
+                    <img src="/intro.gif" alt="" style={{ width: '100%' }} />
+                </Col>
+                <Col xs={24} xl={6}>
+                    <div>
+                        <Typography.Title level={4}>News Matter</Typography.Title>
+                        <p>
+                            <b>U.S. Citizens Please Note:</b> The information contained at this website is for news and
+                            entertainment purposes only.
+                        </p>
+                        <Divider />
+                        Any use of this information in violation of federal, state, provincial or local laws is strictly
+                        prohibited.<p></p>
+                    </div>
+                </Col>
+            </Row>
+            <div style={{ textAlign: 'center', margin: '25px 0 50px' }}>
                 <Typography.Title level={3}>
                     Welcome to Linesandtimes.com please make your way to the menu to review the rules and view lines.
                 </Typography.Title>

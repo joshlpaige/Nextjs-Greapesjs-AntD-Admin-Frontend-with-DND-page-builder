@@ -29,9 +29,10 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
 
     React.useEffect(() => {
         const url = Router.asPath;
-        if (url === '/lines') setSelectedKeys(['lines']);
-        else if (url === '/rules') setSelectedKeys(['rules']);
-        else if (url === '/special') setSelectedKeys(['special']);
+        if (url.includes('/lines')) setSelectedKeys(['lines']);
+        else if (url.includes('/rules')) setSelectedKeys(['rules']);
+        else if (url.includes('/special')) setSelectedKeys(['special']);
+        else setSelectedKeys(['home']);
     }, []);
 
     const MenuCSS: React.CSSProperties = {
@@ -64,7 +65,7 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
     ];
 
     return (
-        <Layout className="layout" style={{ minHeight: '100vh', maxWidth: '85%', margin: '0 auto' }}>
+        <Layout className="layout" style={{ minHeight: '100vh', maxWidth: isMobile ? '90%' : '80%', margin: '0 auto' }}>
             <Header
                 style={{
                     padding: '24px 0',
@@ -73,14 +74,10 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
                 }}
             >
                 <FlexContainer fullwidth justify="space-between">
-                    <img src="/logo-trans.gif" />
-                    <Menu
-                        onClick={navigate}
-                        mode="horizontal"
-                        style={MenuCSS}
-                        defaultSelectedKeys={selectedKeys}
-                        items={items}
-                    />
+                    <Link href={'/'} style={{ height: 0 }}>
+                        <img src="/logo-trans.gif" />
+                    </Link>
+                    <Menu onClick={navigate} mode="horizontal" style={MenuCSS} selectedKeys={selectedKeys} items={items} />
                     <div>
                         <Button icon={<LogoutOutlined />} type="link" onClick={() => signOut()}>
                             Log out
@@ -92,20 +89,25 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
                         </Dropdown> */}
                     </div>
                 </FlexContainer>
+                {isMobile && (
+                    <Menu onClick={navigate} mode="horizontal" style={MenuCSS} selectedKeys={selectedKeys} items={items} />
+                )}
             </Header>
             <Divider style={{ margin: 0 }} />
             <Content style={{ padding: '30px 10px', background: colorBgContainer }}>{children}</Content>
-            <Footer style={{ background: colorBgContainer }}>
+            <Footer style={{ background: colorBgContainer, padding: isMobile ? '24px 0' : '24px 0' }}>
                 <Divider />
                 <FlexContainer justify="space-between">
                     <span>©{new Date().getFullYear()} Linesandtimes.com All Rights Reserved. </span>
-                    <Breadcrumb separator="|">
-                        {items.map((u) => (
-                            <Breadcrumb.Item key={u.key}>
-                                <Link href={`/${u.key === 'home' ? '' : u.key}`}>{u.label}</Link>
-                            </Breadcrumb.Item>
-                        ))}
-                    </Breadcrumb>
+                    {!isMobile && (
+                        <Breadcrumb separator="|">
+                            {items.map((u) => (
+                                <Breadcrumb.Item key={u.key}>
+                                    <Link href={`/${u.key === 'home' ? '' : u.key}`}>{u.label}</Link>
+                                </Breadcrumb.Item>
+                            ))}
+                        </Breadcrumb>
+                    )}
                 </FlexContainer>
             </Footer>
         </Layout>

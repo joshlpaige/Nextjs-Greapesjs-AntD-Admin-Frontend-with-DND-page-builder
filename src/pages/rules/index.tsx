@@ -58,7 +58,7 @@ export default function Home({ session }: Props) {
             </div>
             <Divider />
             <Row>
-                <Col span={18}>
+                <Col xs={24} xl={18}>
                     <div style={{ marginBottom: '50px' }}>
                         <Typography.Title level={5}>
                             Welcome to Linesandtimes.com please make your way to the menu to review the rules and view lines.
@@ -78,7 +78,7 @@ export default function Home({ session }: Props) {
                         )}
                     />
                 </Col>
-                <Col span={6}>
+                <Col xs={24} xl={6}>
                     <Rules.Sidebar />
                 </Col>
             </Row>
