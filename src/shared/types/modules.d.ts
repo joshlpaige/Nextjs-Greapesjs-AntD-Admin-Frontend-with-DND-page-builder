@@ -37,3 +37,4 @@ declare module 'multer-azure-storage' {
     export default class NewClase {}
 }
 
+declare module 'grapesjs-lory-slider';
