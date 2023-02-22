@@ -24,6 +24,8 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
 
     const navigate = (menu: any) => {
         if (menu.key === 'home') Router.push('/');
+        else if (menu.key === 'test') Router.push('/admin/pages/test');
+        else if (menu.key === 'editor') Router.push('/admin/pages');
         else Router.push(`/${menu.key}`);
     };
 
@@ -61,6 +63,14 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
         {
             key: 'special',
             label: 'Special Events',
+        },
+        {
+            key: 'editor',
+            label: 'Test Page Builder',
+        },
+        {
+            key: 'test',
+            label: 'Test Landing page',
         },
     ];
 

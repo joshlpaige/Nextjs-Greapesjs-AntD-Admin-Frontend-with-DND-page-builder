@@ -1,6 +1,7 @@
 export interface Page {
     uid: string;
     title: string;
-    content: string;
+    html: string;
+    css: string;
     status: string;
 }

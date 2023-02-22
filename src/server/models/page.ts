@@ -1,11 +1,12 @@
 import { mongoose, Schema } from '@server/services/mongoose';
-import { Line } from '@shared/types';
+import { Page } from '@shared/types';
 
 const PageSchema = new Schema(
     {
         uid: Schema.Types.String,
         title: Schema.Types.String,
-        content: Schema.Types.String,
+        html: Schema.Types.String,
+        css: Schema.Types.String,
         status: Schema.Types.String,
     },
     {
@@ -13,6 +14,6 @@ const PageSchema = new Schema(
     },
 );
 
-const PageModel = mongoose.models.Pages || mongoose.model<Line>('Pages', PageSchema);
+const PageModel = mongoose.models.Pages || mongoose.model<Page>('Pages', PageSchema);
 
-export default PageModel as mongoose.Model<Line, {}, {}>;
+export default PageModel as mongoose.Model<Page, {}, {}>;
