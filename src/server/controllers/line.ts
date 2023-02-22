@@ -1,7 +1,7 @@
 import { LineModel } from '@server/models';
 import { Line } from '@shared/types';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { http } from '@server/services';
+import { http, wp } from '@server/services';
 import dayjs from 'dayjs';
 
 export const getLines = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -26,23 +26,26 @@ export const getLine = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const createLines = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { lines } = req.body;
-    try {
-        await LineModel.bulkWrite(
-            // @ts-ignore:next-line
-            lines.map((Line: Line) => ({
-                updateOne: {
-                    filter: { uid: Line.uid },
-                    update: { $set: Line },
-                    upsert: true,
-                },
-            })),
-        );
+    // const { lines } = req.body;
+    // try {
+    //     await LineModel.bulkWrite(
+    //         // @ts-ignore:next-line
+    //         lines.map((Line: Line) => ({
+    //             updateOne: {
+    //                 filter: { uid: Line.uid },
+    //                 update: { $set: Line },
+    //                 upsert: true,
+    //             },
+    //         })),
+    //     );
 
-        return new http.SuccessResponse({ success: true }).send(res);
-    } catch (error) {
-        return new http.ErrorResponse(500, error as string).send(res);
-    }
+    //     return new http.SuccessResponse({ success: true }).send(res);
+    // } catch (error) {
+    //     return new http.ErrorResponse(500, error as string).send(res);
+    // }
+    console.log('hey');
+    const posts = await wp.createPosts();
+    return new http.SuccessResponse(posts).send(res);
 };
 
 export const createLine = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -83,9 +86,9 @@ export const deleteLine = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const deleteLines = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { keys } = req.query;
+    const { ids } = req.query;
     try {
-        await LineModel.deleteMany({ key: keys });
+        await LineModel.deleteMany({ key: ids });
 
         return new http.SuccessResponse({ success: true }).send(res);
     } catch (error) {

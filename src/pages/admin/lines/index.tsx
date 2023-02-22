@@ -20,7 +20,7 @@ import {
 } from 'antd';
 import PageWrapper from '@client/componenets/PageWrapper';
 import { Session } from 'next-auth';
-import { SearchOutlined, FileAddOutlined } from '@ant-design/icons';
+import { SearchOutlined, FileAddOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import { getSession } from 'next-auth/react';
 
@@ -29,7 +29,7 @@ import { Popconfirm } from 'antd';
 
 import { Form } from 'antd';
 import { Sports, Broadcast } from '@shared/types/sport';
-import { ColumnType } from 'antd/es/table';
+import type { Dayjs } from 'dayjs';
 import { FilterDropdownProps } from 'antd/es/table/interface';
 import dayjs from 'dayjs';
 import { FlexContainer } from '@client/componenets/Layout';
@@ -50,6 +50,7 @@ export default function Home({ session }: Props) {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [activeLine, setActiveLine] = useState<Line | undefined>(undefined);
     const searchInput = React.useRef<InputRef>(null);
+    const [deleteBydate, setDeleteBydate] = useState<Dayjs | null>(null);
 
     const load = async () => {
         setIsLoading(true);
@@ -274,10 +275,28 @@ export default function Home({ session }: Props) {
         setModalOpen(true);
     };
 
+    const handleDelete = async () => {
+        const ids = data.filter((d) => dayjs(d.date).isSame(deleteBydate, 'day')).map((d) => d.uid);
+        console.log('ids', ids);
+        // await lineApi.deleteLines(ids);
+    };
+
     return (
         <PageWrapper>
-            <FlexContainer fullwidth justify="space-between">
-                <Typography.Title level={isMobile ? 4 : 3}>Manage Lines</Typography.Title>
+            <FlexContainer fullwidth justify="space-between" style={{ marginBottom: '10px' }}>
+                <DatePicker
+                    showToday={false}
+                    placeholder="Delete by date"
+                    value={deleteBydate}
+                    onChange={setDeleteBydate}
+                    renderExtraFooter={() => (
+                        <div style={{ textAlign: 'right', padding: '10px' }}>
+                            <Button danger icon={<DeleteOutlined />} onClick={() => handleDelete()}>
+                                Delete
+                            </Button>
+                        </div>
+                    )}
+                />
                 <Button type="primary" icon={<FileAddOutlined />} onClick={() => handleAdd()}>
                     Add New
                 </Button>

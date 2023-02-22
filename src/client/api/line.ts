@@ -45,7 +45,7 @@ export const updateLine = async (team: Line) => {
 
 export const deleteLines = async (keys: string[]) => {
     return axios
-        .delete<Line>(`/api/lines?keys=${keys}`)
+        .delete<Line>(`/api/lines?ids=${keys}`)
         .then((res) => res.data)
         .catch((err) => err.response.data);
 };
