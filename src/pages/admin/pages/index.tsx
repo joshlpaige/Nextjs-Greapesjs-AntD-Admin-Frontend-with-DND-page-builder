@@ -51,8 +51,10 @@ const PageBuilder = () => {
                 dataSource={pages}
                 renderItem={(item) => (
                     <List.Item
+                        key={item.uid}
                         actions={[
                             <Button
+                                key={'button-update'}
                                 type="link"
                                 onClick={async () => {
                                     await pageApi.updatePage({
@@ -71,6 +73,7 @@ const PageBuilder = () => {
                                 view
                             </Link>,
                             <Button
+                                key={'button-delete'}
                                 danger
                                 type="link"
                                 onClick={async () => {
