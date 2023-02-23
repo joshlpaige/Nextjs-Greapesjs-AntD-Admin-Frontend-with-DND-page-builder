@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScanOutlined, LogoutOutlined, TeamOutlined, DownOutlined } from '@ant-design/icons';
+import { BarsOutlined, LogoutOutlined, TeamOutlined, DownOutlined } from '@ant-design/icons';
 import { Avatar, Breadcrumb, Divider, Layout, Menu, theme, Dropdown, Space, Button } from 'antd';
 import { signOut } from 'next-auth/react';
 import Router from 'next/router';
@@ -7,34 +7,65 @@ import Link from 'next/link';
 import { FlexContainer } from '../Layout';
 import { Display } from '@shared/utils';
 import { UserOutlined } from '@ant-design/icons';
+import { pageApi } from '@client/api';
 
 interface PageWrapperProps {
     children: React.ReactNode;
     title?: string;
 }
 
-const { Header, Sider, Content, Footer } = Layout;
+const { Header, Content, Footer } = Layout;
+
+const items = [
+    {
+        key: 'home',
+        label: 'Home',
+    },
+    {
+        key: 'lines',
+        label: 'Lines',
+    },
+
+    {
+        key: 'rules',
+        label: 'Rules',
+    },
+    {
+        key: 'special',
+        label: 'Special Events',
+    },
+];
 
 const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageWrapperProps) => {
     const isMobile = Display.IsMobile();
+
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+    const [menuItems, setMenuItems] = useState<{ key: string; label: string }[]>([]);
+
     const {
         token: { colorBgContainer },
     } = theme.useToken();
 
     const navigate = (menu: any) => {
         if (menu.key === 'home') Router.push('/');
-        else if (menu.key === 'test') Router.push('/admin/pages/test');
-        else if (menu.key === 'editor') Router.push('/admin/pages');
-        else Router.push(`/${menu.key}`);
+        else if (menu.key === 'lines') Router.push('/lines');
+        else if (menu.key === 'rules') Router.push('/rules');
+        else if (menu.key === 'special') Router.push('/special');
+        else Router.push(`/pages/${menu.key}`);
     };
 
+    const loadMenu = async () => {
+        const temp = await pageApi.getPages('published');
+        const menuItems = temp.map((item) => ({ key: item.uid, label: item.title }));
+        setMenuItems([...items, ...menuItems]);
+    };
     React.useEffect(() => {
         const url = Router.asPath;
         if (url.includes('/lines')) setSelectedKeys(['lines']);
         else if (url.includes('/rules')) setSelectedKeys(['rules']);
         else if (url.includes('/special')) setSelectedKeys(['special']);
         else setSelectedKeys(['home']);
+        loadMenu();
     }, []);
 
     const MenuCSS: React.CSSProperties = {
@@ -46,33 +77,6 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
         alignItems: 'center',
         justifyContent: 'center',
     };
-    const items = [
-        {
-            key: 'home',
-            label: 'Home',
-        },
-        {
-            key: 'lines',
-            label: 'Lines',
-        },
-
-        {
-            key: 'rules',
-            label: 'Rules',
-        },
-        {
-            key: 'special',
-            label: 'Special Events',
-        },
-        {
-            key: 'editor',
-            label: 'Test Page Builder',
-        },
-        {
-            key: 'test',
-            label: 'Test Landing page',
-        },
-    ];
 
     return (
         <Layout className="layout" style={{ minHeight: '100vh', maxWidth: isMobile ? '90%' : '80%', margin: '0 auto' }}>
@@ -87,7 +91,13 @@ const FrontPageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageW
                     <Link href={'/'} style={{ height: 0 }}>
                         <img src="/logo-trans.gif" />
                     </Link>
-                    <Menu onClick={navigate} mode="horizontal" style={MenuCSS} selectedKeys={selectedKeys} items={items} />
+                    <Menu
+                        onClick={navigate}
+                        mode="horizontal"
+                        style={MenuCSS}
+                        selectedKeys={selectedKeys}
+                        items={menuItems}
+                    />
                     <div>
                         <Button icon={<LogoutOutlined />} type="link" onClick={() => signOut()}>
                             Log out

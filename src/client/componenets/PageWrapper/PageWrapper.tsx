@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScanOutlined, LogoutOutlined, TeamOutlined, EditOutlined } from '@ant-design/icons';
+import { ScanOutlined, LogoutOutlined, TeamOutlined, EditOutlined, BarsOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import { signOut } from 'next-auth/react';
 import Router from 'next/router';
@@ -32,6 +32,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageWrappe
         const url = Router.asPath;
         if (url === '/admin/lines') setSelectedKeys(['lines']);
         else if (url === '/admin/teams') setSelectedKeys(['teams']);
+        else if (url === '/admin/pages') setSelectedKeys(['pages']);
         else if (url === '/admin/bulk') setSelectedKeys(['bulk']);
     }, []);
 
@@ -64,6 +65,11 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, title }: PageWrappe
                             key: 'bulk',
                             icon: <EditOutlined />,
                             label: 'Edit Lines by Sport',
+                        },
+                        {
+                            key: 'pages',
+                            icon: <BarsOutlined />,
+                            label: 'Pages',
                         },
                         {
                             key: 'logout',

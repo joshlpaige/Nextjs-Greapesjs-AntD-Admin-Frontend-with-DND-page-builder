@@ -4,4 +4,5 @@ export interface Page {
     html: string;
     css: string;
     status: string;
+    createdAt?: string;
 }
